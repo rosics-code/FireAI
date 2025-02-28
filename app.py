@@ -1,35 +1,35 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
-from openai import OpenAI
+import requests
 
 app = Flask(__name__)
-CORS(app)  # Allow cross-origin requests
 
-# Initialize the OpenRouter client with your API key
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",  # OpenRouter API URL
-    api_key='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'  # Your OpenRouter API Key
-)
+# Your OpenAI or API key setup
+API_KEY = "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"  # Replace with your actual API key
+API_URL = "https://fireai-jpne.onrender.com/api/chat"  # Replace with your actual API URL
 
-@app.route('/api/chat', methods=['POST'])  # This is the POST route your frontend will call
+@app.route('/api/chat', methods=['POST'])
 def chat():
-    data = request.json  # Get the incoming JSON data
-    user_message = data.get("message")  # Extract the message sent by the user
+    data = request.json
+    user_message = data.get("message")
 
     if not user_message:
         return jsonify({"error": "Message is required"}), 400
 
+    # Call your AI API or model here (this example is using a generic API)
+    headers = {'Authorization': f'Bearer {API_KEY}'}
+    payload = {
+        "messages": [{"role": "user", "content": user_message}]
+    }
+
     try:
-        # Send request to OpenRouter's API for completion
-        response = client.chat.completions.create(
-            model="deepseek/deepseek-r1:free",  # Replace with your model
-            messages=[{"role": "user", "content": user_message}]
-        )
-
-        return jsonify({"reply": response['choices'][0]['message']['content']})  # Return AI response
-
+        response = requests.post(API_URL, json=payload, headers=headers)
+        if response.status_code == 200:
+            ai_reply = response.json().get("reply")
+            return jsonify({"reply": ai_reply})
+        else:
+            return jsonify({"error": "Failed to get AI response"}), response.status_code
     except Exception as e:
-        return jsonify({"error": str(e)}), 500  # Error handling if something goes wrong
+        return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=10000)  # Running on all network interfaces for external access
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
