@@ -59,7 +59,7 @@ button {
     userInput.value = "";
 
     // Send to Flask API
-    let response = await fetch("https://your-api.onrender.com/api/chat", {
+    let response = await fetch("https://fireai-jpne.onrender.com/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage })
