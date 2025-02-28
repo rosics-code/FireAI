@@ -21,8 +21,8 @@ def chat():
     try:
         completion = client.chat.completions.create(
             extra_headers={
-                "HTTP-Referer": "<YOUR_SITE_URL>",
-                "X-Title": "<YOUR_SITE_NAME>",
+                "HTTP-Referer": "https://fireai-sepia.vercel.app/",
+                "X-Title": "AI Chatbot",
             },
             model="sao10k/l3.3-euryale-70b",
             messages=[{"role": "user", "content": user_message}]
