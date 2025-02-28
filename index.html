@@ -60,8 +60,8 @@ async function sendMessage() {
     chatBox.innerHTML += `<div><b>You:</b> ${userMessage}</div>`;
     userInput.value = "";
 
-    // Send to Flask API (change the URL to your deployed Flask app)
-    let response = await fetch("https://fireai-jpne.onrender.com/api/chat", {
+    // Send to Flask API (make sure to replace this URL with your Flask app URL)
+    let response = await fetch("https://your-render-app-url.onrender.com/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage })
