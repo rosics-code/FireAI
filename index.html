@@ -61,7 +61,7 @@ async function sendMessage() {
     userInput.value = "";
 
     // Send to Flask API (make sure to replace this URL with your Flask app URL)
-    let response = await fetch("https://your-render-app-url.onrender.com/api/chat", {
+    let response = await fetch("https://fireai-jpne.onrender.com/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage })
