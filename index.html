@@ -47,7 +47,9 @@ button {
     cursor: pointer;
 }
   </style>
-  <script>async function sendMessage() {
+
+<script>
+async function sendMessage() {
     let userInput = document.getElementById("userInput");
     let chatBox = document.getElementById("chatBox");
     
@@ -59,7 +61,7 @@ button {
     userInput.value = "";
 
     // Send to Flask API
-    let response = await fetch("https://fireai-jpne.onrender.com/", {
+    let response = await fetch("https://fireai-jpne.onrender.com/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage })
@@ -79,6 +81,7 @@ function handleKeyPress(event) {
     }
 }
 </script>
+
 <body>
     <div class="chat-container">
         <h2>AI Chatbot</h2>
