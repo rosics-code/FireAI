@@ -6,94 +6,6 @@
     <title>AI Chatbot</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: #f4f4f4;
-    }
-
-    .chat-container {
-        width: 400px;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .chat-box {
-        height: 300px;
-        overflow-y: auto;
-        border: 1px solid #ddd;
-        padding: 10px;
-        margin-bottom: 10px;
-    }
-
-    input {
-        width: 75%;
-        padding: 8px;
-    }
-
-    button {
-        width: 20%;
-        padding: 8px;
-        background: blue;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-</style>
-
-<script>
-async function sendMessage() {
-    let userInput = document.getElementById("userInput");
-    let chatBox = document.getElementById("chatBox");
-
-    let userMessage = userInput.value.trim();
-    if (!userMessage) return;
-
-    // Show user message
-    chatBox.innerHTML += `<div><b>You:</b> ${userMessage}</div>`;
-    userInput.value = "";
-
-    // Send to Flask API (using your Render URL)
-    let response = await fetch("https://fireai-jpne.onrender.com/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage })
-    });
-
-    // Check if the response is successful
-    if (!response.ok) {
-        chatBox.innerHTML += `<div><b>Error:</b> Unable to get AI response.</div>`;
-        return;
-    }
-
-    let data = await response.json();
-
-    // Check if the AI response is present in the data
-    if (data.reply) {
-        // Show AI response
-        chatBox.innerHTML += `<div><b>AI:</b> ${data.reply}</div>`;
-    } else {
-        chatBox.innerHTML += `<div><b>AI:</b> No reply from AI, please try again.</div>`;
-    }
-
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
-}
-
-// Send message when Enter key is pressed
-function handleKeyPress(event) {
-    if (event.key === "Enter") {
-        sendMessage();
-    }
-}
-</script>
-
 <body>
     <div class="chat-container">
         <h2>AI Chatbot</h2>
@@ -101,5 +13,43 @@ function handleKeyPress(event) {
         <input type="text" id="userInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
         <button onclick="sendMessage()">Send</button>
     </div>
+
+    <script>
+        async function sendMessage() {
+            let userInput = document.getElementById("userInput");
+            let chatBox = document.getElementById("chatBox");
+
+            let userMessage = userInput.value.trim();
+            if (!userMessage) return;
+
+            // Show user message in chat
+            chatBox.innerHTML += `<div><b>You:</b> ${userMessage}</div>`;
+            userInput.value = "";
+
+            // Send the message to your Flask API
+            let response = await fetch("https://your-backend-url/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            });
+
+            let data = await response.json();
+
+            if (data.reply) {
+                // Show AI response in chat
+                chatBox.innerHTML += `<div><b>AI:</b> ${data.reply}</div>`;
+            } else {
+                // Error handling
+                chatBox.innerHTML += `<div><b>Error:</b> Unable to get AI response</div>`;
+            }
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
 </body>
 </html>
